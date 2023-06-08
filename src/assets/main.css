@@ -1,0 +1,12 @@
+@import "./base.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app {
+    margin: 0 auto;
+    height: 100vh;
+
+    font-weight: normal;
+    overflow-x: hidden;
+}
