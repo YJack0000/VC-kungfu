@@ -1,46 +1,32 @@
-# vue-project
+# VC-kungfu
 
-This template should help get you started developing with Vue 3 in Vite.
+2023年Young Lions Competition 坎城全球青年創意競賽台灣代表隊選拔賽台灣區域賽隊伍，並在當初比賽獲得了台灣區第四名的成績。
 
-## Recommended IDE Setup
+## 介紹
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+我們提出了將肺中空氣結合功夫真氣的構想，製作一款能夠透過網頁遊戲檢測自己肺活量的網頁應用程式（VC Kung Fu）。使用 Web Audio API 來偵測使用者的聲音可否持續，並透過 Firebase 來儲存使用者的資料。並針對不同檢測結果，提供不同的網頁內容，讓使用者能夠了解自己的肺活量狀況。
 
-## Type Support for `.vue` Imports in TS
+## Firebase Config 設定
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+在`src/firebase.js`中設定firebase config
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+```javascript
+export const firebaseConfig = {
+    // your firebase config
+}
 ```
 
-### Compile and Hot-Reload for Development
+## 開發
 
-```sh
+```bash
+npm install
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+## 部署
 
-```sh
+```bash
 npm run build
+npm run deploy
 ```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+另外有整合 CI/CD，只要將程式碼 push 到 master branch，就會自動部署到 firebase hosting 上。
