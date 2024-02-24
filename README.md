@@ -9,8 +9,9 @@
 ## 這個專案嘗試了什麼酷東西
 
 * PWA Support -> 可以直接將網頁安裝在手機桌面中，並作為應用程式來執行。
-* Web Audio -> 封裝 [Web Audio API](https://www.w3.org/2011/audio/drafts/1WD/WebAudio/) 以作為在專案中的聲音偵測相關工具。
+* Web Audio -> 使用 [@vueuse/core](https://vueuse.org/) 封裝的 [Web Audio API](https://www.w3.org/2011/audio/drafts/1WD/WebAudio/) 以作為在專案中的聲音偵測相關工具。
 * SPA-based Game -> 整個遊戲都是透過 Vue 加上 CSS 來作為渲染工具，而不是使用 Javascript Game Engine。
+* CI -> 透過 [Github Action](https://github.com/features/actions) 做 CI，並且部署到 [Firebase](https://firebase.google.com/) 上。
 
 ## Firebase Config 設定
 
