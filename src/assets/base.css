@@ -6,7 +6,9 @@ html {
 body {
     min-height: 100vh;
     background: url("/images/background.jpg") repeat center center fixed;
-    transition: color 0.5s, background-color 0.5s;
+    transition:
+        color 0.5s,
+        background-color 0.5s;
     overflow: hidden;
     font-family: "GenWanMinM";
 }

@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics, logEvent } from "firebase/analytics";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { initializeApp } from "firebase/app"
+import { getAnalytics, logEvent } from "firebase/analytics"
+import { getFirestore, collection, addDoc } from "firebase/firestore"
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -9,14 +9,21 @@ const firebaseConfig = {
     storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
-    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 }
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getFirestore(app);
+const app = initializeApp(firebaseConfig)
+const analytics = getAnalytics(app)
+const db = getFirestore(app)
 
-export const saveResult = async (name: string, age: string, result: any, pitchRecord: number[], volumeRecord: number[], duration: number) => {
+export const saveResult = async (
+    name: string,
+    age: string,
+    result: any,
+    pitchRecord: number[],
+    volumeRecord: number[],
+    duration: number
+) => {
     const docRef = collection(db, "result")
     await addDoc(docRef, {
         name: name,

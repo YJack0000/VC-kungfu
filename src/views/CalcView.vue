@@ -5,7 +5,7 @@ import type AppSpinnerVue from '@/components/AppSpinner.vue';
 </template>
 <script setup lang="ts">
 import AppSpinner from "@/components/AppSpinner.vue"
-import router from "@/router";
+import router from "@/router"
 import { ref, onMounted } from "vue"
 
 const context = ref("")
@@ -16,6 +16,6 @@ onMounted(async () => {
     await delay(Math.random() * 1000)
     context.value = "計算結果..."
     await delay(Math.random() * 2000)
-    router.push('/result')
+    router.push("/result")
 })
 </script>

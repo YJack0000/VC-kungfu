@@ -4,8 +4,8 @@
 </template>
 <script setup lang="ts">
 const props = defineProps<{
-    level: number, 
-    levelName: string,
+    level: number
+    levelName: string
 }>()
 
 const imgSrc = `/images/result/type-${props.level}.png`

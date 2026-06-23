@@ -8,7 +8,7 @@
             <h1 v-if="!isClicked" class="mx-8 mb-10 text-2xl">先深吸一口氣</h1>
             <h1 v-else class="fade-in mx-8 mb-10 text-2xl">準備好了嗎<br />對準麥克風出聲以開始</h1>
             <button
-                class="mb-16 w-28 rounded-full bg-primary p-2 pl-8 pr-8 text-center text-2xl text-white drop-shadow-[2px_3px_3px_rgba(0,0,0,0.25)] transition duration-300 ease-in-out hover:scale-110"
+                class="bg-primary mb-16 w-28 rounded-full p-2 pr-8 pl-8 text-center text-2xl text-white drop-shadow-[2px_3px_3px_rgba(0,0,0,0.25)] transition duration-300 ease-in-out hover:scale-110"
                 @click="handleClick"
             >
                 {{ buttonStr }}
