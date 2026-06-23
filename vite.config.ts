@@ -4,7 +4,7 @@ import { defineConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
 
 import { VitePWA } from "vite-plugin-pwa"
-import viteCompression from 'vite-plugin-compression';
+import viteCompression from "vite-plugin-compression"
 
 export default defineConfig({
     plugins: [
@@ -40,9 +40,9 @@ export default defineConfig({
             filter: /\.(png|ttc|js|mjs|json|css|html|ttf)$/i,
             disable: false,
             threshold: 1024,
-            algorithm: 'gzip',
-            ext: '.gz'
-        })
+            algorithm: "gzip",
+            ext: ".gz",
+        }),
     ],
     resolve: {
         alias: {

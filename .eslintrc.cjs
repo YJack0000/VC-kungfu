@@ -7,7 +7,6 @@ module.exports = {
         "plugin:vue/essential", // 使用 essential 規範
         "eslint:recommended", // 使用 ESLint 推薦規範
         "@vue/eslint-config-prettier",
-        "./.eslintrc-auto-import.json", // `unplugin-auto-import` 生成的規則設定
     ],
     rules: {
         indent: "off",
@@ -25,5 +24,5 @@ module.exports = {
     plugins: ["prettier"],
     parserOptions: {
         ecmaVersion: 2020,
-    }
+    },
 }

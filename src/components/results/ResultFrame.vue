@@ -7,7 +7,7 @@
                 <slot name="graph"></slot>
             </div>
             <span class="mx-auto text-xs">總時長：<slot name="duration"></slot></span>
-            <div class="my-2 w-full flex"><slot name="level" /></div>
+            <div class="my-2 flex w-full"><slot name="level" /></div>
         </div>
         <table class="mx-auto mt-2 w-11/12 border border-solid border-primary">
             <tr>
@@ -80,6 +80,6 @@
                 </td>
             </tr>
         </table>
-        <div class="text-center text-sm my-2">*截圖分享你是哪類武功奇才*</div>
+        <div class="my-2 text-center text-sm">*截圖分享你是哪類武功奇才*</div>
     </div>
 </template>

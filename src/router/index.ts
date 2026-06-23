@@ -24,9 +24,9 @@ const router = createRouter({
             component: () => import("../views/GameView.vue"),
         },
         {
-            path: '/calc',
-            name: 'calc',
-            component: () => import('../views/CalcView.vue'),
+            path: "/calc",
+            name: "calc",
+            component: () => import("../views/CalcView.vue"),
         },
         {
             path: "/result",

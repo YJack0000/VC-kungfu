@@ -2,9 +2,7 @@
     <div class="fade-in flex">
         <AppContainer>
             <img src="/images/game/animation.gif" alt="logo" class="fade-in mx-auto mb-4 w-48 -rotate-2" />
-            <h1 class="mx-4 mb-4 text-xl">
-                啊！↑～！＼↖～<br>一起成為武林大師吧！
-            </h1>
+            <h1 class="mx-4 mb-4 text-xl">啊！↑～！＼↖～<br />一起成為武林大師吧！</h1>
             <div class="mx-auto mb-4 h-2.5 w-11/12 rounded-full bg-gray-200">
                 <div class="h-2.5 rounded-full bg-primary" :style="{ width: progressBarWidth }"></div>
             </div>

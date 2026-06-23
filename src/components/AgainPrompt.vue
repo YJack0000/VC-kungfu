@@ -1,5 +1,5 @@
 <template>
-    <div v-if="show" class="absolute right-0 bottom-12 z-50 flex w-screen justify-end sm:right-4 animate-bounce">
+    <div v-if="show" class="absolute right-0 bottom-12 z-50 flex w-screen animate-bounce justify-end sm:right-4">
         <div
             id="toast-default"
             class="slide-in float-right flex w-[32px] max-w-sm items-center bg-primary p-0.5 shadow"
