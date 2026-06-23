@@ -9,7 +9,7 @@ import { Chart } from "chart.js/auto"
 import type { ChartConfiguration, ChartDataCustomTypesPerDataset } from "chart.js"
 import { useGame } from "@/composables/useGame"
 
-const { pitchRecord, volumeRecord, duration } = useGame()
+const { pitchRecord, volumeRecord } = useGame()
 
 onMounted(() => {
     const ctx = document.getElementById("myChart") as HTMLCanvasElement
@@ -76,12 +76,9 @@ const config: ChartConfiguration = {
                     font: {
                         size: 10,
                     },
-                    callback: function (val, index) {
-                        // console.log(index, pitchRecord.value.length)
+                    callback: function (val) {
                         if (typeof val !== "number") return ""
                         const label: number = parseFloat(this.getLabelForValue(val))
-                        // if (Math.abs(duration.value / 1000 - label) < 1) return ""
-                        // console.log(Number.isInteger(label / 0.5), label / 0.5, label, index)
                         return Number.isInteger(label / 1) ? label + "s" : ""
                     },
                     maxRotation: 0,

@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import AppContainer from "@/layout/AppContainer.vue"
 import BottomImage from "@/components/BottomImage.vue"
-import { ref, computed, watch, onMounted } from "vue"
+import { ref, computed, watch, onMounted, onUnmounted } from "vue"
 import router from "@/router"
 import { useGame } from "@/composables/useGame"
 import { log } from "@/firebase"
@@ -28,16 +28,24 @@ const encouragements = [
     "佩服佩服，可謂一代宗師了！",
 ]
 
-let count = ref(0)
+const count = ref(0)
 const level = [5000, 10000, 15000, 20000, 30000, 9999999]
-const { duration, inGame } = useGame()
+const { duration, inGame, stopGame } = useGame()
+
+// Pure getter: fill the bar within the current milestone segment so it only
+// ever advances. The milestone (count) is progressed in the watcher below —
+// mutating state inside a computed is a Vue anti-pattern (and was buggy here).
 const progressBarWidth = computed(() => {
-    const p = (duration.value / level[count.value]) * 100
-    if (p > 100) {
+    const start = count.value === 0 ? 0 : level[count.value - 1]
+    const end = level[count.value]
+    const p = ((duration.value - start) / (end - start)) * 100
+    return `${Math.max(0, Math.min(p, 100))}%`
+})
+
+watch(duration, (d) => {
+    while (count.value < 5 && d >= level[count.value]) {
         count.value++
     }
-    if (count.value > 5) count.value = 5
-    return `${p}%`
 })
 
 watch(inGame, (val) => {
@@ -47,10 +55,13 @@ watch(inGame, (val) => {
     }
 })
 onMounted(() => {
-    // console.log("enter_game")
     log("enter_game")
     if (!inGame.value) {
         router.push("/ready")
     }
+})
+onUnmounted(() => {
+    // Safety net: release the mic/AudioContext if the user leaves mid-game.
+    stopGame()
 })
 </script>

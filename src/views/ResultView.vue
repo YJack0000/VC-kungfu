@@ -13,7 +13,7 @@
                 <template #graph>
                     <ResultGraph />
                 </template>
-                <template #duration> {{ pitchRecord.length / 10 }} 秒 </template>
+                <template #duration> {{ (duration / 1000).toFixed(1) }} 秒 </template>
                 <template #level>
                     <LevelBar :level="result.level" />
                 </template>
@@ -56,7 +56,6 @@
 import ResultFrame from "@/components/results/ResultFrame.vue"
 import ResultGraph from "@/components/results/ResultGraph.vue"
 import TypeImage from "@/components/results/TypeImage.vue"
-import BottomImage from "@/components/BottomImage.vue"
 import MoodItem from "@/components/results/MoodItem.vue"
 import LevelBar from "@/components/results/LevelBar.vue"
 import { useWindowSize } from "@vueuse/core"
@@ -66,12 +65,18 @@ import { name, age } from "@/stores"
 import AgainPrompt from "@/components/AgainPrompt.vue"
 import { saveResult } from "@/firebase"
 import router from "@/router"
+import { onMounted } from "vue"
 
 const { height } = useWindowSize()
 const { duration, pitchRecord, volumeRecord } = useGame()
 const result = getResult(duration.value, pitchRecord.value, volumeRecord.value)
 
-saveResult(name.value, age.value, result, pitchRecord.value, volumeRecord.value, duration.value)
-
-if (pitchRecord.value.length === 0) router.push("/form")
+onMounted(async () => {
+    // Don't persist a junk document for an empty/degenerate run; redirect first.
+    if (pitchRecord.value.length === 0) {
+        router.push("/form")
+        return
+    }
+    await saveResult(name.value, age.value, result, pitchRecord.value, volumeRecord.value, duration.value)
+})
 </script>

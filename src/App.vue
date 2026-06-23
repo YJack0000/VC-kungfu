@@ -18,7 +18,7 @@ import InstallPrompt from "@/components/InstallPrompt.vue"
 import { ref } from "vue"
 import { useWindowSize } from "@vueuse/core"
 
-const { width, height } = useWindowSize()
+const { width } = useWindowSize()
 
 const isEmbeddedBrowser = () => {
     const ua = navigator.userAgent

@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app"
 import { getAnalytics, logEvent } from "firebase/analytics"
 import { getFirestore, collection, addDoc } from "firebase/firestore"
+import type { GameResult } from "@/composables/result"
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -19,28 +20,34 @@ const db = getFirestore(app)
 export const saveResult = async (
     name: string,
     age: string,
-    result: any,
+    result: GameResult,
     pitchRecord: number[],
     volumeRecord: number[],
     duration: number
-) => {
-    const docRef = collection(db, "result")
-    await addDoc(docRef, {
-        name: name,
-        age: age,
-        level: result.level,
-        levelName: result.levelName,
-        description: result.description,
-        keys: result.keys,
-        style: result.style,
-        luck: result.luck,
-        pitchRecord: pitchRecord,
-        volumeRecord: volumeRecord,
-        duration: duration,
-        timestamp: new Date(),
-    })
+): Promise<boolean> => {
+    try {
+        const docRef = collection(db, "result")
+        await addDoc(docRef, {
+            name: name,
+            age: age,
+            level: result.level,
+            levelName: result.levelName,
+            description: result.description,
+            keys: result.keys,
+            style: result.style,
+            luck: result.luck,
+            pitchRecord: pitchRecord,
+            volumeRecord: volumeRecord,
+            duration: duration,
+            timestamp: new Date(),
+        })
+        return true
+    } catch (e) {
+        console.error("saveResult failed", e)
+        return false
+    }
 }
 
-export const log = (name: string, params: any = {}) => {
+export const log = (name: string, params: Record<string, unknown> = {}) => {
     logEvent(analytics, name, params)
 }

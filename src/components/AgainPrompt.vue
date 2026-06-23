@@ -12,11 +12,11 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { ref } from "vue"
 import router from "@/router"
 import { log } from "@/firebase"
 
-const show = ref<Boolean>(true)
+const show = ref<boolean>(true)
 const again = () => {
     log("click_again")
     router.push("/ready")

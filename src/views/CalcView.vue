@@ -1,5 +1,3 @@
-import type AppSpinnerVue from '@/components/AppSpinner.vue';
-
 <template>
     <AppSpinner> {{ context }} </AppSpinner>
 </template>

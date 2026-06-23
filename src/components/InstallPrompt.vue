@@ -55,20 +55,24 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { ref } from "vue"
 import { log } from "@/firebase"
 
-const show = ref<Boolean>(false)
-const deferredPrompt = ref<any>(null)
+// Not in the standard DOM lib types; minimal shape for what we use.
+interface BeforeInstallPromptEvent extends Event {
+    prompt: () => Promise<void>
+}
+
+const show = ref<boolean>(false)
+const deferredPrompt = ref<BeforeInstallPromptEvent | null>(null)
 
 // check whether app is installed
 if (window.matchMedia("(display-mode: standalone)").matches) {
     show.value = false
 }
 window.addEventListener("beforeinstallprompt", (e) => {
-    console.log("beforeinstallprompt")
     e.preventDefault()
-    deferredPrompt.value = e
+    deferredPrompt.value = e as BeforeInstallPromptEvent
     show.value = true
 })
 window.addEventListener("appinstalled", () => {
@@ -79,7 +83,7 @@ window.addEventListener("appinstalled", () => {
 
 const install = () => {
     log("install_app")
-    deferredPrompt.value.prompt()
+    deferredPrompt.value?.prompt()
 }
 
 const dismiss = () => {

@@ -19,47 +19,55 @@
 </template>
 <script setup lang="ts">
 import AppContainer from "@/layout/AppContainer.vue"
-import AppButton from "@/components/AppButton.vue"
 import BottomImage from "@/components/BottomImage.vue"
-import { ref, watch, onMounted } from "vue"
+import { ref, watch, onMounted, onUnmounted } from "vue"
 import router from "@/router"
-import { useRouter } from "vue-router"
 import { useGame } from "@/composables/useGame"
 import { name, age } from "@/stores"
 import { log } from "@/firebase"
 
 const buttonStr = ref<string>("✔")
-const { startGame, initGame, inGame, ensurePermissions } = useGame()
+const { startGame, initGame, stopGame, inGame, ensurePermissions } = useGame()
 
 const isClicked = ref<boolean>(false) // prevent apple two click
+// Set when the user navigates away mid-countdown; checked after each await so
+// we don't start a zombie game (and we release the mic that initGame opened).
+let cancelled = false
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 const handleClick = async () => {
     isClicked.value = true
     log("click_ready")
-    // buttonStr.value = "載入中"
     try {
         await initGame()
-    } catch (e) {
+    } catch {
         return
     }
+    if (cancelled) return stopGame()
 
     if (!(await ensurePermissions())) {
         alert("無法開啟麥克風，請確認是否已開啟權限並使用瀏覽器開啟。")
+        stopGame()
         return
     }
+    if (cancelled) return stopGame()
+
     audioEffect()
     buttonStr.value = "3"
     await delay(1000)
+    if (cancelled) return stopGame()
     audioEffect()
     buttonStr.value = "2"
     await delay(1000)
+    if (cancelled) return stopGame()
     audioEffect()
     buttonStr.value = "1"
     await delay(1000)
+    if (cancelled) return stopGame()
     buttonStr.value = "啊～"
     try {
         await startGame()
-    } catch (e) {
+    } catch {
+        stopGame()
         return
     }
 }
@@ -75,5 +83,9 @@ const audioEffect = () => {
 
 onMounted(() => {
     if (!name.value || !age.value) router.push("/form")
+})
+
+onUnmounted(() => {
+    cancelled = true
 })
 </script>
