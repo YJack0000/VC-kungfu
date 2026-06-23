@@ -11,8 +11,10 @@ const { audioInputs: microphones, ensurePermissions } = useDevicesList({
 const currentMicrophone = computed(() => microphones.value[0]?.deviceId)
 
 const { stream: _stream, start: _startStream } = useUserMedia({
-    audioDeviceId: currentMicrophone,
-    videoDeviceId: false,
+    constraints: computed(() => ({
+        audio: currentMicrophone.value ? { deviceId: currentMicrophone.value } : true,
+        video: false,
+    })),
 })
 
 const pitch = ref(-1)
@@ -134,7 +136,7 @@ const _parseDataFromStream = (audioContext: AudioContext, analyser: AnalyserNode
     })
     // 從 buffer 中取出資料
     var bufferLength: number = analyser.fftSize
-    var buffer: Float32Array = new Float32Array(bufferLength)
+    const buffer = new Float32Array(bufferLength)
     analyser.getFloatTimeDomainData(buffer)
 
     // 計算音量
