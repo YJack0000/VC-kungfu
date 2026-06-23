@@ -53,3 +53,5 @@ npm run build        # 產出 dist/
 ```
 
 部署則整合了 CI/CD：只要將程式碼 push 到 `main` branch，GitHub Actions 就會自動建置並部署到 Firebase Hosting 上（開 PR 時會建立 preview channel）。若要手動部署，需安裝 [firebase-tools](https://firebase.google.com/docs/cli) 並執行 `firebase deploy`。
+
+> ⚠️ CI（`action-hosting-deploy`）只會部署 **Hosting**，不會部署 Firestore 安全規則。修改 `firestore.rules` 後，需手動執行 `firebase deploy --only firestore:rules` 才會生效。

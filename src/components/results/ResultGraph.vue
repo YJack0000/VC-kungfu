@@ -22,7 +22,9 @@ const data: ChartDataCustomTypesPerDataset = {
         {
             label: "音高 (Hz)",
             type: "line",
-            data: pitchRecord.value.map((val) => Number(val.toFixed(2))),
+            // Sentinel -1 (silence / out-of-range) -> null so the line shows a gap
+            // instead of a spike below the axis.
+            data: pitchRecord.value.map((val) => (val > 0 ? Number(val.toFixed(2)) : null)),
             borderColor: "#cd5035",
             backgroundColor: "#cd5035",
             yAxisID: "pitch",
@@ -31,7 +33,7 @@ const data: ChartDataCustomTypesPerDataset = {
             label: "音量 (dB)",
             type: "line",
             // fill: true,
-            data: volumeRecord.value,
+            data: volumeRecord.value.map((val) => (val > 0 ? val : null)),
             borderColor: "#393b42",
             backgroundColor: "#393b42",
             yAxisID: "volume",

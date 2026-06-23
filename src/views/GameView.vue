@@ -32,13 +32,13 @@ const count = ref(0)
 const level = [5000, 10000, 15000, 20000, 30000, 9999999]
 const { duration, inGame, stopGame } = useGame()
 
-// Pure getter: fill the bar within the current milestone segment so it only
-// ever advances. The milestone (count) is progressed in the watcher below —
-// mutating state inside a computed is a Vue anti-pattern (and was buggy here).
+// Pure getter: fill smoothly toward the top tier (30s) so the bar only ever
+// advances. The milestone (count, used for the encouragement text) is
+// progressed in the watcher below — mutating state inside a computed is a Vue
+// anti-pattern (and was buggy here).
+const maxDuration = 30000
 const progressBarWidth = computed(() => {
-    const start = count.value === 0 ? 0 : level[count.value - 1]
-    const end = level[count.value]
-    const p = ((duration.value - start) / (end - start)) * 100
+    const p = (duration.value / maxDuration) * 100
     return `${Math.max(0, Math.min(p, 100))}%`
 })
 

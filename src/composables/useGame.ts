@@ -11,6 +11,10 @@ const { audioInputs: microphones, ensurePermissions } = useDevicesList({
 const currentMicrophone = computed(() => microphones.value[0]?.deviceId)
 
 const { stream: _stream, start: _startStream, stop: _stopStream } = useUserMedia({
+    // Don't let a devicechange (e.g. Bluetooth mic connecting mid-game) auto-restart
+    // the stream — that would stop the track the analyser is connected to and end the
+    // game. We pick the device once at initGame time.
+    autoSwitch: false,
     constraints: computed(() => ({
         audio: currentMicrophone.value ? { deviceId: currentMicrophone.value } : true,
         video: false,

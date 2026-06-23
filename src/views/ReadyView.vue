@@ -70,6 +70,9 @@ const handleClick = async () => {
         stopGame()
         return
     }
+    // If the user left during the final await, tear the just-started game down
+    // instead of leaving a zombie game holding the mic with no view mounted.
+    if (cancelled) stopGame()
 }
 
 watch(inGame, (val) => {

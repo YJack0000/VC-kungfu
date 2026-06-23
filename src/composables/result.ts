@@ -50,7 +50,9 @@ const getPitchResult = (pitchRecord: number[]): string => {
     let h = 0,
         l = 0
     for (let i = 0; i < pitchRecord.length; i++) {
-        if (pitchRecord[i] > threshold) {
+        const p = pitchRecord[i]
+        if (p <= 0) continue // skip silent / no-pitch frames (sentinel -1)
+        if (p > threshold) {
             h++
         } else {
             l++
