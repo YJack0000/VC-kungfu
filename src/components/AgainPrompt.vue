@@ -2,7 +2,7 @@
     <div v-if="show" class="absolute right-0 bottom-12 z-50 flex w-screen animate-bounce justify-end sm:right-4">
         <div
             id="toast-default"
-            class="slide-in float-right flex w-[32px] max-w-sm items-center bg-primary p-0.5 shadow"
+            class="slide-in float-right flex w-[32px] max-w-sm items-center bg-primary p-0.5 shadow-sm"
             role="alert"
         >
             <a class="rounded-lg p-1.5 text-sm font-medium text-white hover:bg-orange-100" href="#" @click="again">

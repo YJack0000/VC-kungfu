@@ -2,11 +2,11 @@
     <div v-if="show" class="absolute right-0 bottom-4 z-50 flex w-screen sm:right-4">
         <div
             id="toast-default"
-            class="slide-in mx-auto flex w-11/12 max-w-sm items-center rounded-lg bg-white p-4 text-gray-500 shadow dark:bg-gray-800 dark:text-gray-400"
+            class="slide-in mx-auto flex w-11/12 max-w-sm items-center rounded-lg bg-white p-4 text-gray-500 shadow-sm dark:bg-gray-800 dark:text-gray-400"
             role="alert"
         >
             <div
-                class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-orange-100 text-primary"
+                class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-primary"
             >
                 <svg
                     aria-hidden="true"

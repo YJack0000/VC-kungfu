@@ -1,7 +1,9 @@
+@import "tailwindcss";
 @import "./base.css";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+@theme {
+    --color-primary: #bf553d;
+}
 
 #app {
     margin: 0 auto;

@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from "node:url"
 
 import { defineConfig } from "vite"
 import vue from "@vitejs/plugin-vue"
+import tailwindcss from "@tailwindcss/vite"
 
 import { VitePWA } from "vite-plugin-pwa"
 import { compression } from "vite-plugin-compression2"
@@ -9,6 +10,7 @@ import { compression } from "vite-plugin-compression2"
 export default defineConfig({
     plugins: [
         vue(),
+        tailwindcss(),
         VitePWA({
             injectRegister: "auto",
             registerType: "autoUpdate",
