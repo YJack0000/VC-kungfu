@@ -2,11 +2,9 @@
     <div class="fade-in flex">
         <AppContainer>
             <img src="/images/game/animation.gif" alt="logo" class="fade-in mx-auto mb-4 w-48 -rotate-2" />
-            <h1 class="mx-4 mb-4 text-xl">
-                啊！↑～！＼↖～<br>一起成為武林大師吧！
-            </h1>
+            <h1 class="mx-4 mb-4 text-xl">啊！↑～！＼↖～<br />一起成為武林大師吧！</h1>
             <div class="mx-auto mb-4 h-2.5 w-11/12 rounded-full bg-gray-200">
-                <div class="h-2.5 rounded-full bg-primary" :style="{ width: progressBarWidth }"></div>
+                <div class="bg-primary h-2.5 rounded-full" :style="{ width: progressBarWidth }"></div>
             </div>
             <div class="mb-48">{{ encouragements[count] }}</div>
         </AppContainer>
@@ -16,7 +14,7 @@
 <script setup lang="ts">
 import AppContainer from "@/layout/AppContainer.vue"
 import BottomImage from "@/components/BottomImage.vue"
-import { ref, computed, watch, onMounted } from "vue"
+import { ref, computed, watch, onMounted, onUnmounted } from "vue"
 import router from "@/router"
 import { useGame } from "@/composables/useGame"
 import { log } from "@/firebase"
@@ -30,16 +28,24 @@ const encouragements = [
     "佩服佩服，可謂一代宗師了！",
 ]
 
-let count = ref(0)
+const count = ref(0)
 const level = [5000, 10000, 15000, 20000, 30000, 9999999]
-const { duration, inGame } = useGame()
+const { duration, inGame, stopGame } = useGame()
+
+// Pure getter: fill smoothly toward the top tier (30s) so the bar only ever
+// advances. The milestone (count, used for the encouragement text) is
+// progressed in the watcher below — mutating state inside a computed is a Vue
+// anti-pattern (and was buggy here).
+const maxDuration = 30000
 const progressBarWidth = computed(() => {
-    const p = (duration.value / level[count.value]) * 100
-    if (p > 100) {
+    const p = (duration.value / maxDuration) * 100
+    return `${Math.max(0, Math.min(p, 100))}%`
+})
+
+watch(duration, (d) => {
+    while (count.value < 5 && d >= level[count.value]) {
         count.value++
     }
-    if (count.value > 5) count.value = 5
-    return `${p}%`
 })
 
 watch(inGame, (val) => {
@@ -49,10 +55,13 @@ watch(inGame, (val) => {
     }
 })
 onMounted(() => {
-    // console.log("enter_game")
     log("enter_game")
     if (!inGame.value) {
         router.push("/ready")
     }
+})
+onUnmounted(() => {
+    // Safety net: release the mic/AudioContext if the user leaves mid-game.
+    stopGame()
 })
 </script>

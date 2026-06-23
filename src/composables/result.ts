@@ -1,3 +1,5 @@
+export type GameResult = ReturnType<typeof getResult>
+
 export const getResult = (duration: number, pitchRecord: number[], volumeRecord: number[]) => {
     const volumeResult: string = getVolumeResult(volumeRecord)
     const pitchResult: string = getPitchResult(pitchRecord)
@@ -33,34 +35,37 @@ export const getResult = (duration: number, pitchRecord: number[], volumeRecord:
     }
 }
 
+// Classify counts of "high" vs "low" samples into fluctuating/high/low,
+// guarding against the empty and all-one-side cases (h/l would be NaN/Infinity).
+const classify = (h: number, l: number): string => {
+    if (h === 0 && l === 0) return "f"
+    if (h === 0 || l === 0) return h > l ? "h" : "l"
+    const ratio = h / l
+    if (ratio < 2 && ratio > 0.5) return "f"
+    return h > l ? "h" : "l"
+}
+
 const getPitchResult = (pitchRecord: number[]): string => {
     const threshold = 180
-    const n = pitchRecord.length
     let h = 0,
         l = 0
-    for (let i = 0; i < n; i++) {
-        if (pitchRecord[i] > threshold) {
+    for (let i = 0; i < pitchRecord.length; i++) {
+        const p = pitchRecord[i]
+        if (p <= 0) continue // skip silent / no-pitch frames (sentinel -1)
+        if (p > threshold) {
             h++
         } else {
             l++
         }
     }
-
     // 高頻率與低頻率的比例小，代表頻率起伏
-    // console.log("頻率：", h, l, h / l)
-    if (h / l < 2 && h / l > 0.5) {
-        return "f"
-    } else if (h > l) {
-        return "h"
-    } else {
-        return "l"
-    }
+    return classify(h, l)
 }
 
 const getVolumeResult = (volumeRecord: number[]): string => {
-    if (volumeRecord.length === 0) return "f"
-    const threshold = volumeRecord.reduce((a, b) => a + b) / volumeRecord.length
     const n = volumeRecord.length
+    if (n === 0) return "f"
+    const threshold = volumeRecord.reduce((a, b) => a + b, 0) / n
     let h = 0,
         l = 0
     for (let i = 0; i < n; i++) {
@@ -70,16 +75,8 @@ const getVolumeResult = (volumeRecord: number[]): string => {
             l++
         }
     }
-
     // 高音量與低音量的比例小，代表音量起伏
-    // console.log("音量：", h, l, h / l, threshold)
-    if (h / l < 2 && h / l > 0.5) {
-        return "f"
-    } else if (h > l) {
-        return "h"
-    } else {
-        return "l"
-    }
+    return classify(h, l)
 }
 
 const levelStrings: string[] = ["第一式", "第二式", "第三式", "第四式", "第五式"]
@@ -94,7 +91,9 @@ const levelDescriptions: string[] = [
     "金鐘罩身，外力難欺 拳覆鐵布，萬夫莫敵",
 ]
 
-const levelSuggestions: any[] = [
+type LevelSuggestion = { do: string; dont: string }
+
+const levelSuggestions: LevelSuggestion[] = [
     {
         do: "調勻呼吸節奏",
         dont: "久坐不動，致氣息淤積",
@@ -117,7 +116,9 @@ const levelSuggestions: any[] = [
     },
 ]
 
-const resultContext: any = {
+type ResultStyle = { keys: string[]; style: string; lucks: string[] }
+
+const resultContext: Record<string, ResultStyle> = {
     // 分貝高 x 頻率高
     hh: {
         keys: ["激昂", "果斷", "活潑", "性急", "直來直往"],

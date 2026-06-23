@@ -15,17 +15,19 @@
 
 ## Firebase Config 設定
 
-在 .env 裡面設定 firebase 的 config，如下：
+在 .env 裡面設定 firebase 的 config，如下（Vite 只會載入 `VITE_` 前綴的環境變數）：
 
 ```bash
-FIREBASE_API_KEY=<YOUR_FIREBASE_API_KEY>
-FIREBASE_AUTH_DOMAIN=<YOUR_FIREBASE_AUTH_DOMAIN>
-FIREBASE_PROJECT_ID=<YOUR_FIREBASE_PROJECT_ID>
-FIREBASE_STORAGE_BUCKET=<YOUR_FIREBASE_STORAGE_BUCKET>
-FIREBASE_MESSAGING_SENDER_ID=<YOUR_FIREBASE_MESSAGING_SENDER_ID>
-FIREBASE_APP_ID=<YOUR_FIREBASE_APP_ID>
-FIREBASE_MEASUREMENT_ID=<YOUR_FIREBASE_MEASUREMENT_ID>
+VITE_FIREBASE_API_KEY=<YOUR_FIREBASE_API_KEY>
+VITE_FIREBASE_AUTH_DOMAIN=<YOUR_FIREBASE_AUTH_DOMAIN>
+VITE_FIREBASE_PROJECT_ID=<YOUR_FIREBASE_PROJECT_ID>
+VITE_FIREBASE_STORAGE_BUCKET=<YOUR_FIREBASE_STORAGE_BUCKET>
+VITE_FIREBASE_MESSAGING_SENDER_ID=<YOUR_FIREBASE_MESSAGING_SENDER_ID>
+VITE_FIREBASE_APP_ID=<YOUR_FIREBASE_APP_ID>
+VITE_FIREBASE_MEASUREMENT_ID=<YOUR_FIREBASE_MEASUREMENT_ID>
 ```
+
+可參考專案根目錄的 `.env.example`。
 
 ## 開發
 
@@ -34,10 +36,22 @@ npm install
 npm run dev
 ```
 
-## 部署
+## 程式碼檢查與格式化
 
 ```bash
-npm run build
-npm run deploy
+npm run type-check   # 型別檢查
+npm run lint         # ESLint（會自動修正）
+npm run format       # Prettier 格式化
 ```
-另外有整合 CI/CD，只要將程式碼 push 到 master branch，就會自動部署到 firebase hosting 上。
+
+## 部署
+
+本地建置：
+
+```bash
+npm run build        # 產出 dist/
+```
+
+部署則整合了 CI/CD：只要將程式碼 push 到 `main` branch，GitHub Actions 就會自動建置並部署到 Firebase Hosting 上（開 PR 時會建立 preview channel）。若要手動部署，需安裝 [firebase-tools](https://firebase.google.com/docs/cli) 並執行 `firebase deploy`。
+
+> ⚠️ CI（`action-hosting-deploy`）只會部署 **Hosting**，不會部署 Firestore 安全規則。修改 `firestore.rules` 後，需手動執行 `firebase deploy --only firestore:rules` 才會生效。

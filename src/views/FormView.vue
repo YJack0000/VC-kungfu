@@ -1,5 +1,3 @@
-import AppInput from '@/components/AppInput.vue';
-
 <template>
     <div class="fade-in flex">
         <audio ref="audio">
@@ -43,7 +41,7 @@ const audioEffect = () => {
 }
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-const errorMsg = ref<String>("")
+const errorMsg = ref<string>("")
 const handleSend = async () => {
     log("click_send")
     if (!name.value || !age.value) {
@@ -65,7 +63,9 @@ const handleSend = async () => {
         audioEffect()
         await delay(1500)
         router.push("/ready")
+        return
     }
+    // Reached only when one of the validation branches above set an error.
     log("invalid_send", { name: name.value, age: age.value })
 }
 </script>

@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import AppContainer from "@/layout/AppContainer.vue"
 import AppButton from "@/components/AppButton.vue"
-import { ref, computed, onMounted } from "vue"
+import { ref, computed } from "vue"
 import { useWindowSize } from "@vueuse/core"
 import router from "@/router"
 import { log } from "@/firebase"

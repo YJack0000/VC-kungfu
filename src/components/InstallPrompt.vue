@@ -2,12 +2,10 @@
     <div v-if="show" class="absolute right-0 bottom-4 z-50 flex w-screen sm:right-4">
         <div
             id="toast-default"
-            class="slide-in mx-auto flex w-11/12 max-w-sm items-center rounded-lg bg-white p-4 text-gray-500 shadow dark:bg-gray-800 dark:text-gray-400"
+            class="slide-in mx-auto flex w-11/12 max-w-sm items-center rounded-lg bg-white p-4 text-gray-500 shadow-sm dark:bg-gray-800 dark:text-gray-400"
             role="alert"
         >
-            <div
-                class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-orange-100 text-primary"
-            >
+            <div class="text-primary inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-100">
                 <svg
                     aria-hidden="true"
                     class="h-5 w-5"
@@ -57,20 +55,24 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { ref } from "vue"
 import { log } from "@/firebase"
 
-const show = ref<Boolean>(false)
-const deferredPrompt = ref<any>(null)
+// Not in the standard DOM lib types; minimal shape for what we use.
+interface BeforeInstallPromptEvent extends Event {
+    prompt: () => Promise<void>
+}
+
+const show = ref<boolean>(false)
+const deferredPrompt = ref<BeforeInstallPromptEvent | null>(null)
 
 // check whether app is installed
 if (window.matchMedia("(display-mode: standalone)").matches) {
     show.value = false
 }
 window.addEventListener("beforeinstallprompt", (e) => {
-    console.log("beforeinstallprompt")
     e.preventDefault()
-    deferredPrompt.value = e
+    deferredPrompt.value = e as BeforeInstallPromptEvent
     show.value = true
 })
 window.addEventListener("appinstalled", () => {
@@ -81,7 +83,7 @@ window.addEventListener("appinstalled", () => {
 
 const install = () => {
     log("install_app")
-    deferredPrompt.value.prompt()
+    deferredPrompt.value?.prompt()
 }
 
 const dismiss = () => {
